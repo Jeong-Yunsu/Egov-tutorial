@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <logger name="java.sql" level="DEBUG"/>
+    <logger name="egovframework" level="DEBUG"/>
+    <logger name="org.egovframe" level="DEBUG"/>
+    <logger name="jdbc.sqltiming" level="DEBUG"/>
+    <logger name="org.springframework.web" level="DEBUG"/>
+</configuration>

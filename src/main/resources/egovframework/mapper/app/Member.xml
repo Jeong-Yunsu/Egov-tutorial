@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Member">
+
+	    <insert id="insertMember">
+    	INSERT INTO tb_mbr (MBR_NM, MBR_ID, MBR_PSWD, RGTR_ID, RGTR_DT)
+    	VALUES ( #{mbrNm}, #{mbrId}, #{mbrPswd}, #{rgtrId}, #{rgtrDt})
+    	</insert>
+    	
+    	<select id="selectLoginMember" resultType="app.member.vo.MemberVO">
+    		SELECT MBR_NM, MBR_ID, MBR_PSWD, LOCK_YN, RGTR_ID, RGTR_DT
+    		FROM tb_mbr
+    		WHERE MBR_ID = #{mbrId}
+    	</select>
+    	
+    	<update id="updateMemberLogin">
+    		UPDATE tb_mbr
+    		SET FAIL_CNT = #{failCnt},
+    			LOCK_YN = #{lockYn}
+    		WHERE MBR_ID = #{mbrId}
+    	
+    	</update>
+
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Notice">
+
+    <insert id="insertNotice">
+    	INSERT INTO tb_ntc (NTC_TTL, NTC_CN, TOP_FIX, RGTR_ID, RGTR_DT)
+    	VALUES ( #{ntcTtl}, #{ntcCn}, #{topFix}, #{rgtrId}, #{rgtrDt})
+    	
+    	<selectKey resultType="int" keyProperty="ntcSn" order="AFTER">
+    		SELECT LAST_INSERT_ID()
+    	</selectKey>
+    </insert>
+    
+    <select id="selectNotice" resultType="app.notice.vo.NoticeVO">
+    	SELECT NTC_SN, NTC_TTL, NTC_CN, TOP_FIX, RGTR_ID, RGTR_DT
+    	FROM tb_ntc
+    	WHERE NTC_SN = #{ntcSn}
+    </select>
+    
+    <!-- 공지사항 목록 조회 -->
+    <select id="selectNoticeList" resultType="app.notice.vo.NoticeVO">
+    	SELECT NTC_SN, NTC_TTL, NTC_CN, TOP_FIX, RGTR_ID, RGTR_DT
+    	FROM tb_ntc
+    	WHERE TOP_FIX = 'N'
+    	<choose>
+    	    <when test="searchCnd1 == 1">
+    			AND NTC_TTL LIKE CONCAT('%', #{searchWrd}, '%')
+    	    </when>
+    	    <when test="searchCnd1 == 2">
+    	    	AND NTC_CN LIKE CONCAT('%', #{searchWrd}, '%')
+    	    </when>
+    	    <otherwise>
+    	    	AND ( NTC_TTL LIKE CONCAT('%', #{searchWrd}, '%') OR NTC_CN LIKE CONCAT('%', #{searchWrd}, '%') )
+    	    </otherwise>
+    	</choose>
+    	
+    	ORDER BY RGTR_DT DESC
+    	LIMIT #{firstIndex}, #{recordCountPerPage}
+    </select>
+    
+    <select id="selectNoticeListCnt" resultType="int">
+ 		SELECT COUNT(NTC_SN)
+ 		FROM tb_ntc
+ 		WHERE TOP_FIX = 'N'
+    	<choose>
+    	    <when test="searchCnd1 == 1">
+    			AND NTC_TTL LIKE CONCAT('%', #{searchWrd}, '%')
+    	    </when>
+    	    <when test="searchCnd1 == 2">
+    	    	AND NTC_CN LIKE CONCAT('%', #{searchWrd}, '%')
+    	    </when>
+    	    <otherwise>
+    	    	AND (NTC_TTL LIKE CONCAT('%', #{searchWrd}, '%') OR NTC_CN LIKE CONCAT('%', #{searchWrd}, '%'))
+    	    </otherwise>
+    	</choose>
+    </select>
+    
+    <!-- 공지사항 상단 고정 목록 조회 -->
+    <select id="selectNoticeListTopFix" resultType="app.notice.vo.NoticeVO">
+    	SELECT NTC_SN, NTC_TTL, NTC_CN, TOP_FIX, RGTR_ID, RGTR_DT
+    	FROM tb_ntc
+    	WHERE TOP_FIX = 'Y'
+    </select>
+</mapper>

@@ -1,0 +1,11 @@
+server:
+  servlet:
+    context-path: /
+  port: 9000
+
+spring:
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/workspace/h2db/base_project
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
